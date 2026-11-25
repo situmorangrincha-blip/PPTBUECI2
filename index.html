@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PANDA SUKSESS · Tim Bima & Yudistira</title>
+  <meta name="description" content="Presentasi interaktif PANDA SUKSESS: before vs after coverage dan distribusi MSS per rute.">
+  <link rel="icon" href="img/paw.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="loader" class="loader">
+    <img src="img/panda_v2.png" alt="" class="loader-panda">
+    <div class="loader-text">Menyiapkan presentasi…</div>
+    <div class="loader-bar"><span></span></div>
+  </div>
+
+  <div id="progress" class="progress"><span></span></div>
+  <main id="viewport" class="viewport">
+    <div id="stage" class="stage" aria-live="polite"></div>
+  </main>
+
+  <div id="stepHint" class="step-hint" hidden>Klik atau tekan <b>→</b> untuk lanjut</div>
+
+  <nav id="toolbar" class="toolbar" aria-label="Kontrol presentasi">
+    <button id="btnPrev" title="Sebelumnya (←)" aria-label="Sebelumnya"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="counter"><span id="cur">1</span><i>/</i><span id="tot">1</span></div>
+    <button id="btnNext" title="Berikutnya (→)" aria-label="Berikutnya"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    <span class="sep"></span>
+    <button id="btnGrid" title="Semua slide (O)" aria-label="Semua slide"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></button>
+    <button id="btnPanda" class="on" title="Panda pemandu (P)" aria-label="Panda pemandu"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="6" r="2.4"/><circle cx="17.5" cy="6" r="2.4"/><circle cx="12" cy="13.5" r="7"/><circle cx="9.3" cy="12.8" r="1.3"/><circle cx="14.7" cy="12.8" r="1.3"/></svg></button>
+    <button id="btnEdit" title="Edit slide (E)" aria-label="Edit slide"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button>
+    <button id="btnFiles" title="Data Excel" aria-label="Data Excel"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg></button>
+    <button id="btnNotes" title="Catatan pembicara (N)" aria-label="Catatan"><svg viewBox="0 0 24 24"><path d="M5 4h14v12l-4 4H5z"/><path d="M15 20v-4h4"/><path d="M8 9h8M8 13h5"/></svg></button>
+    <button id="btnFull" title="Layar penuh (F)" aria-label="Layar penuh"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+  </nav>
+
+  <!-- Drawer breakdown -->
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <div class="drawer-kicker" id="dKicker">BREAKDOWN</div>
+        <h2 id="dTitle">-</h2>
+      </div>
+      <button class="x" id="dClose" aria-label="Tutup">×</button>
+    </div>
+    <div class="drawer-summary" id="dSummary"></div>
+    <div class="tabs" id="dTabs"></div>
+    <div class="drawer-tools" id="dTools"></div>
+    <div class="drawer-body" id="dBody"></div>
+  </aside>
+  <div id="scrim" class="scrim"></div>
+
+  <!-- Overview -->
+  <section id="grid" class="grid-overlay" aria-hidden="true">
+    <div class="grid-head"><h2>Semua slide</h2><button class="x" id="gClose" aria-label="Tutup">×</button></div>
+    <div class="grid-list" id="gList"></div>
+  </section>
+
+  <!-- Panel file -->
+  <section id="files" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head"><h2>Data &amp; versi</h2><button class="x" id="fClose" aria-label="Tutup">×</button></div>
+      <p class="muted" id="saveInfo"></p>
+      <div class="drop" data-kind="xlsx">
+        <input type="file" id="inXlsx" accept=".xlsx">
+        <div class="drop-ico x">X</div>
+        <div><b>Ganti Excel data</b><span id="nXlsx" class="muted">Belum ada file baru</span></div>
+      </div>
+      <div class="rules">
+        <b>Cara kerja</b>
+        <ul>
+          <li>Excel dipakai untuk breakdown saat objek diklik (rute, SKU, outlet, EC, ONC, pareto, ITG). Upload di sini hanya berlaku di browser ini.</li>
+          <li>Untuk mengubah slide (teks, grafik, tambah slide, import/export PPT) klik tombol <b>pensil</b> lalu masukkan PIN.</li>
+          <li>Excel yang di-upload dari mode edit ikut tersimpan untuk semua orang.</li>
+        </ul>
+      </div>
+      <div class="modal-actions">
+        <button class="btn ghost" id="btnResetX">Pakai Excel bersama</button>
+        <a class="btn ghost" href="content/data.xlsx" download="PANDA_SUKSESS_Data.xlsx">Unduh Excel bawaan</a>
+        <a class="btn ghost" href="content/deck.pptx" download="PANDA_SUKSESS.pptx">Unduh PPT bawaan</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="notes" class="notes" aria-hidden="true"><b>Catatan pembicara</b><div id="notesText"></div></section>
+  <div id="toast" class="toast"></div>
+
+  <script src="js/vendor/jszip.min.js"></script>
+  <script src="js/vendor/xlsx.mini.min.js"></script>
+  <script src="js/vendor/chart.umd.min.js"></script>
+  <script src="js/vendor/chartjs-plugin-datalabels.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/pptx-parse.js"></script>
+  <script src="js/model.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/panda.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/drill.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
